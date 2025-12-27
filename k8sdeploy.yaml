@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecom-deploy
+  labels:
+    app: ecom-deploy-mvn-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ecom-mvn-app
+  template:
+    metadata:
+      labels:
+        app: ecom-mvn-app
+    spec:
+      containers:
+      - name: ecom-mvn-container
+        image: maithili28/ecommerce:${BUILD_NUMBER}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ecom-np-service
+  labels:
+    app: ecom-mvn-app
+spec:
+  selector:
+    app: ecom-mvn-app
+
+  type: NodePort
+  ports:
+  - port: 8080
+    targetPort: 8080
