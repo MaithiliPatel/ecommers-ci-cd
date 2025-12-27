@@ -84,5 +84,65 @@ pipeline {
                sh "docker push maithili28/ecommerce:${BUILD_NUMBER}"
             }
         }
+
+		/* ------------------------------------------------------
+           8. APPROVED DEPLOYMENT TO KUBERNETE CLUSTER
+        ------------------------------------------------------ */
+        stage('Approve - Deployment to Kubernete Cluster') {
+            steps {
+                
+				//----------------send an approval prompt-------------
+                script {
+                   env.APPROVED_DEPLOY = input message: 'User input required Choose "yes" | "Abort"'
+                       }
+                //-----------------end approval prompt------------
+            }
+        }
+
+       /* ------------------------------------------------------
+           9. DEPLOY TO KUBERNETS CLUSTER
+        ------------------------------------------------------ */
+		stage('Deploy to Kubernetes Cluster') {
+    		steps {
+       			 sshPublisher(publishers: [
+            		sshPublisherDesc(
+                		configName: 'kube-master',
+               				 transfers: [
+                    			sshTransfer(
+				                        execCommand: """
+                        				# 1️⃣ Ensure deployment & service exist (safe to run)
+                        				kubectl apply -f k8sdeploy.yaml
+
+                       				    # 2️⃣ Update image with latest build
+                        				kubectl set image deployment/mai-deploy \
+                        				mai-mvn-container=maithili28/ecommerce:${BUILD_NUMBER}
+
+                        				# 3️⃣ Wait for rollout to complete
+                        				kubectl rollout status deployment/mai-deploy
+				                        """
+                    					)
+                				]	
+            				)
+        			]
+				)
+    		}
+		}
+			
+        /* ------------------------------------------------------
+           10. DEPLOY TO KUBERNETS CLUSTER
+        ------------------------------------------------------ */
+		stage('Docker Cleanup (Keep Latest Build)') {
+			steps {
+				sh '''
+					echo "Keeping image: maithili28/ecommerce:${BUILD_NUMBER}"
+					docker images maithili28/ecommerce --format "{{.Tag}}" \
+					| grep -v "^${BUILD_NUMBER}$" \
+					| xargs -r -I {} docker rmi maithili28/ecommerce:{}
+				'''
+			}
+		}
+    }
+}
+
     }
 }
