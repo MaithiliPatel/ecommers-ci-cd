@@ -12,11 +12,12 @@ pipeline {
         ------------------------------------------------------ */
         stage('SCM Checkout') {
             steps {
-                git 'https://github.com/MaithiliPatel/ecommers-ci-cd.git',
-                    credentialsId: 'ecommerce-token',
-                    branch: 'main'
-            }
-        }
+                      git url: 'https://github.com/MaithiliPatel/ecommers-ci-cd.git',
+                      branch: 'main',
+                      credentialsId: 'ecommerce-token'
+                 }
+         }
+
 
         /* ------------------------------------------------------
            2. BUILD JAR USING MAVEN
