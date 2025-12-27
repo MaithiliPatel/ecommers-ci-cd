@@ -12,7 +12,9 @@ pipeline {
         ------------------------------------------------------ */
         stage('SCM Checkout') {
             steps {
-                git 'https://github.com/MaithiliPatel/ecommers-ci-cd.git'
+                git 'https://github.com/MaithiliPatel/ecommers-ci-cd.git',
+                    credentialsId: 'github-token',
+                    branch: 'main'
             }
         }
 
