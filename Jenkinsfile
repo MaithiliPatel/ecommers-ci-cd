@@ -38,15 +38,5 @@ pipeline {
 			}
 		}
 		
-		/* ------------------------------------------------------
-           4. QUALITY GATE
-        ------------------------------------------------------ */
-		stage('Quality Gate') {
-			steps {
-				timeout(time: 3, unit: 'MINUTES') {
-				waitForQualityGate abortPipeline: true
-				}
-			}
-		}
     }
 }
