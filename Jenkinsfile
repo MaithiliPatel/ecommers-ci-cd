@@ -27,5 +27,26 @@ pipeline {
                 sh "mvn -Dmaven.test.failure.ignore=true clean package"
             }
         }
+        /* ------------------------------------------------------
+           3. SONARCLOUD SCAN
+        ------------------------------------------------------ */
+		stage('SonarCloud Scan') {
+			steps {
+				withSonarQubeEnv('sonarcloud') {
+				  sh 'mvn sonar:sonar'
+				}
+			}
+		}
+		
+		/* ------------------------------------------------------
+           4. QUALITY GATE
+        ------------------------------------------------------ */
+		stage('Quality Gate') {
+			steps {
+				timeout(time: 3, unit: 'MINUTES') {
+				waitForQualityGate abortPipeline: true
+				}
+			}
+		}
     }
 }
