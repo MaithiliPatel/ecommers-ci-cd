@@ -102,45 +102,44 @@ pipeline {
        /* ------------------------------------------------------
            9. DEPLOY TO KUBERNETS CLUSTER
         ------------------------------------------------------ */
-		stage('Deploy to Kubernetes Cluster') {
-    		steps {
-       			 sshPublisher(publishers: [
-            		sshPublisherDesc(
-                		configName: 'kube-master',
-               				 transfers: [
-                    			sshTransfer(
+		    stage('Deploy to Kubernetes Cluster') {
+  steps {
+    sshPublisher(
+      publishers: [
+        sshPublisherDesc(
+          configName: 'kube-master',
+          transfers: [
+            sshTransfer(
+              sourceFiles: 'k8sdeployment.yaml',      // send file
+              remoteDirectory: 'deploy',              // remote folder
+              execCommand: '''
+                set -xe
+                cd deploy
 
-										sourceFiles: 'k8sdeployment.yaml',    // <-- send file
-                        				remoteDirectory: 'deploy',            // remote folder
-				                        
-										execCommand: """
-										set -xe
-										cd deploy
-										
-                        				echo "🏗 Applying Kubernetes Deployment & Service"
-                 					   	kubectl apply -f k8sdeployment.yaml
+                echo "🏗 Applying Kubernetes Deployment & Service"
+                kubectl apply -f k8sdeployment.yaml
 
-                    					echo "🔄 Updating image to latest build"
-                    					kubectl set image deployment/mai-deploy \
-                      				    mai-mvn-container=maithili28/ecommerce:${BUILD_NUMBER}
+                echo "🔄 Updating image to latest build"
+                kubectl set image deployment/mai-deploy \
+                  mai-mvn-container=maithili28/ecommerce:${BUILD_NUMBER}
 
-                   					   echo "🐳 Current Pods:"
-                    			       kubectl get pods
+                echo "🐳 Current Pods:"
+                kubectl get pods
 
-                    				   echo "Wait for rollout to complete"
-                    				   kubectl rollout status deployment/mai-deploy
+                echo "Wait for rollout to complete"
+                kubectl rollout status deployment/mai-deploy
 
-                   					  echo "✅ Deployment Successful"
-               						  """
-                    					)
-                				]	
-            				)
-        			],
-    			verbose: true
-				)
-    		}
-		}
-			
+                echo "✅ Deployment Successful"
+              '''
+            )
+          ]
+        )
+      ],
+      verbose: true
+    )
+  }
+}
+
         /* ------------------------------------------------------
            10. DEPLOY TO KUBERNETS CLUSTER
         ------------------------------------------------------ */
