@@ -112,24 +112,21 @@ pipeline {
 				                        execCommand: """
 										set -e
 										
-                        				# 1️⃣ Ensure deployment & service exist (safe to run)
                         				echo "🏗 Applying Kubernetes Deployment & Service"
-										kubectl apply -f k8sdeployment.yaml
+                 					   	kubectl apply -f k8sdeployment.yaml
 
-                       				    # 2️⃣ Update image with latest build
-										echo "🔄 Updating image to latest build"
-                        				kubectl set image deployment/ecom-deploy \
-                        				ecom-mvn-container=maithili28/ecommerce:${BUILD_NUMBER}
-									    
-										echo "🐳 Current Pods:"
-              							kubectl get pods
+                    					echo "🔄 Updating image to latest build"
+                    					kubectl set image deployment/mai-deploy \
+                      				    mai-mvn-container=maithili28/ecommerce:${BUILD_NUMBER}
 
-                        				# 3️⃣ Wait for rollout to complete
-										echo "Wait for rollout to complete"
-                        				kubectl rollout status deployment/ecom-deploy
-				                     
-    									echo "✅ Deployment Successful"
-									    """
+                   					   echo "🐳 Current Pods:"
+                    			       kubectl get pods
+
+                    				   echo "Wait for rollout to complete"
+                    				   kubectl rollout status deployment/mai-deploy
+
+                   					  echo "✅ Deployment Successful"
+               						  """
                     					)
                 				]	
             				)
