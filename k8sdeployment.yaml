@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mai-deploy
+  labels:
+    app: mai-mvn-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mai-mvn-app
+  template:
+    metadata:
+      labels:
+        app: mai-mvn-app
+    spec:
+      containers:
+      - name: mai-mvn-container
+        image: maithili28/ecommerce:${BUILD_NUMBER}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mai-np-service
+  labels:
+    app: mai-mvn-app
+spec:
+  selector:
+    app: mai-mvn-app
+  type: NodePort
+  ports:
+  - port: 8080
+    targetPort: 8080
