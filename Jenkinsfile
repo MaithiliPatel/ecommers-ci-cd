@@ -111,17 +111,23 @@ pipeline {
                     			sshTransfer(
 				                        execCommand: """
                         				# 1️⃣ Ensure deployment & service exist (safe to run)
-                        				kubectl apply -f k8sdeploy.yaml
+                        				echo "🏗 Applying Kubernetes Deployment & Service"
+										kubectl apply -f k8sdeploy.yaml
 
                        				    # 2️⃣ Update image with latest build
-										echo"Update image with latest build"
+										echo "🔄 Updating image to latest build"
                         				kubectl set image deployment/ecom-deploy \
                         				ecom-mvn-container=maithili28/ecommerce:${BUILD_NUMBER}
+									    
+										echo "🐳 Current Pods:"
+              							kubectl get pods
 
                         				# 3️⃣ Wait for rollout to complete
-										echo"Wait for rollout to complete"
+										echo "Wait for rollout to complete"
                         				kubectl rollout status deployment/ecom-deploy
 				                        """
+
+										 echo "✅ Deployment Successful"
                     					)
                 				]	
             				)
