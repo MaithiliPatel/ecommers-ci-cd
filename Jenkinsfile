@@ -114,7 +114,7 @@ pipeline {
                         				remoteDirectory: 'deploy',            // remote folder
 				                        
 										execCommand: """
-										set -e
+										set -xe
 										cd deploy
 										
                         				echo "🏗 Applying Kubernetes Deployment & Service"
@@ -135,7 +135,8 @@ pipeline {
                     					)
                 				]	
             				)
-        			]
+        			],
+    			verbose: true
 				)
     		}
 		}
