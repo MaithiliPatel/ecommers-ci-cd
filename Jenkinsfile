@@ -109,8 +109,13 @@ pipeline {
                 		configName: 'kube-master',
                				 transfers: [
                     			sshTransfer(
-				                        execCommand: """
+
+										sourceFiles: 'k8sdeployment.yaml',    // <-- send file
+                        				remoteDirectory: 'deploy',            // remote folder
+				                        
+										execCommand: """
 										set -e
+										cd deploy
 										
                         				echo "🏗 Applying Kubernetes Deployment & Service"
                  					   	kubectl apply -f k8sdeployment.yaml
