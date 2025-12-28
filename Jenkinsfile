@@ -114,7 +114,7 @@ pipeline {
 										
                         				# 1️⃣ Ensure deployment & service exist (safe to run)
                         				echo "🏗 Applying Kubernetes Deployment & Service"
-										kubectl apply -f k8sdeploy.yaml
+										kubectl apply -f k8sdeployment.yaml
 
                        				    # 2️⃣ Update image with latest build
 										echo "🔄 Updating image to latest build"
