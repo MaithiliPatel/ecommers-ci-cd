@@ -114,11 +114,11 @@ pipeline {
                         				kubectl apply -f k8sdeploy.yaml
 
                        				    # 2️⃣ Update image with latest build
-                        				kubectl set image deployment/mai-deploy \
-                        				mai-mvn-container=maithili28/ecommerce:${BUILD_NUMBER}
+                        				kubectl set image deployment/ecom-deploy \
+                        				ecom-mvn-container=maithili28/ecommerce:${BUILD_NUMBER}
 
                         				# 3️⃣ Wait for rollout to complete
-                        				kubectl rollout status deployment/mai-deploy
+                        				kubectl rollout status deployment/ecom-deploy
 				                        """
                     					)
                 				]	
