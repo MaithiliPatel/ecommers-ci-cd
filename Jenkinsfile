@@ -134,8 +134,7 @@ pipeline {
             )
           ]
         )
-      ],
-      verbose: true
+      ]
     )
   }
 }
