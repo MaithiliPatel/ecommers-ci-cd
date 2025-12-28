@@ -110,6 +110,8 @@ pipeline {
                				 transfers: [
                     			sshTransfer(
 				                        execCommand: """
+										set -e
+										
                         				# 1️⃣ Ensure deployment & service exist (safe to run)
                         				echo "🏗 Applying Kubernetes Deployment & Service"
 										kubectl apply -f k8sdeploy.yaml
