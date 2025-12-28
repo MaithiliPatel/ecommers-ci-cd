@@ -125,9 +125,9 @@ pipeline {
                         				# 3️⃣ Wait for rollout to complete
 										echo "Wait for rollout to complete"
                         				kubectl rollout status deployment/ecom-deploy
-				                        """
-
-										 echo "✅ Deployment Successful"
+				                     
+    									echo "✅ Deployment Successful"
+									    """
                     					)
                 				]	
             				)
