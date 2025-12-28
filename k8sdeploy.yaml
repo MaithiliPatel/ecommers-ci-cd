@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: ecom-mvn-container
-        image: maithili28/ecommerce:${BUILD_NUMBER}
+        image: maithili28/ecommerce:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
