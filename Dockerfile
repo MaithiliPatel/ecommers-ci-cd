@@ -1,4 +1,9 @@
 FROM eclipse-temurin:17-jdk-jammy
-COPY target/ecommerce-Service-0.0.1-SNAPSHOT.jar app.jar
+WORKDIR /app
+
+# copy the built jar from Maven target
+# this will take whatever jar is generated
+COPY target/*.jar app.jar
+
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","/app/app.jar"]
